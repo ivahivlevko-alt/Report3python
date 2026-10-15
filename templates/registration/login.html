@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Вхід{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5"><div class="col-md-4">
+<div class="card login-card"><div class="card-body p-4">
+  <h4 class="page-title mb-3">Вхід у систему</h4>
+  <form method="post">{% csrf_token %}
+    <div class="mb-3"><label class="form-label">Логін</label>
+      <input name="username" class="form-control" autofocus required></div>
+    <div class="mb-3"><label class="form-label">Пароль</label>
+      <input type="password" name="password" class="form-control" required></div>
+    {% if form.errors %}<div class="alert alert-danger">Невірний логін або пароль.</div>{% endif %}
+    <button class="btn btn-brand w-100">Увійти</button>
+  </form>
+</div></div></div></div>
+{% endblock %}

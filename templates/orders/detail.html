@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3 class="page-title">Замовлення №{{ order.pk }}</h3>
+<p>{{ order.created_at|date:"d.m.Y H:i" }}{% if order.created_by %} · оформив: {{ order.created_by.get_username }}{% endif %}
+ · Статус: <span class="badge bg-{% if order.status == 'paid' %}success{% else %}warning text-dark{% endif %}">{{ order.get_status_display }}</span>
+ · Склад: {% if order.stock_deducted %}товари списано{% else %}не списано{% endif %}</p>
+<div class="card mb-3"><table class="table mb-0"><thead><tr><th>Товар</th><th>Ціна</th><th>Кількість</th><th>Сума</th></tr></thead>
+{% for i in items %}<tr><td>{{ i.product }}</td><td>{{ i.unit_price }}</td><td>{{ i.quantity }}</td><td>{{ i.subtotal }}</td></tr>{% endfor %}
+<tfoot><tr><th colspan="3" class="text-end">Разом:</th><th>{{ order.total_amount }} грн</th></tr></tfoot></table></div>
+<div class="d-flex flex-wrap gap-2">
+{% for code,label in order.next_statuses %}
+<form method="post" action="{% url 'order_change_status' order.pk %}">{% csrf_token %}<input type="hidden" name="status" value="{{ code }}">
+<button class="btn {% if code == 'unpaid' %}btn-outline-secondary{% else %}btn-brand{% endif %}" {% if code == 'unpaid' %}onclick="return confirm('Повернути в неоплачені? Товари повернуться на склад.')"{% endif %}>→ {{ label }}</button></form>
+{% endfor %}</div>
+<p class="text-muted small mt-2">При переході в «Оплачене» товари списуються зі складу, при поверненні в «Неоплачене» — повертаються.</p>
+{% endblock %}

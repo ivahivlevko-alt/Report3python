@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3"><h3 class="page-title">Категорії</h3>
+{% if is_admin %}<a class="btn btn-brand" href="{% url 'category_create' %}">+ Додати категорію</a>{% endif %}</div>
+<div class="table-responsive card"><table class="table table-hover mb-0">
+<thead><tr><th>Назва</th><th>Опис</th><th>Товарів</th>{% if is_admin %}<th></th>{% endif %}</tr></thead>
+{% for c in object_list %}<tr><td><a href="{% url 'product_list' %}?category={{ c.pk }}">{{ c.name }}</a></td><td>{{ c.description }}</td><td>{{ c.products_n }}</td>
+{% if is_admin %}<td class="text-end text-nowrap"><a class="btn btn-sm btn-outline-primary" href="{% url 'category_update' c.pk %}">Ред.</a>
+<a class="btn btn-sm btn-outline-danger" href="{% url 'category_delete' c.pk %}">Видалити</a></td>{% endif %}</tr>
+{% empty %}<tr><td colspan="4" class="text-center text-muted py-3">Категорій ще немає</td></tr>{% endfor %}
+</table></div>
+{% include 'pager.html' %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3"><h3 class="page-title">Товари</h3>
+{% if is_admin %}<a class="btn btn-brand" href="{% url 'product_create' %}">+ Додати товар</a>{% endif %}</div>
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-4"><input class="form-control" name="q" value="{{ request.GET.q }}" placeholder="Пошук за назвою"></div>
+  <div class="col-md-3"><select class="form-select" name="category"><option value="">Усі категорії</option>
+    {% for c in categories %}<option value="{{ c.pk }}" {% if request.GET.category == c.pk|stringformat:'s' %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select></div>
+  <div class="col-auto pt-2 form-check"><input class="form-check-input" type="checkbox" name="low" value="1" id="low" {% if request.GET.low %}checked{% endif %}><label class="form-check-label" for="low">Закінчуються</label></div>
+  <div class="col-auto"><button class="btn btn-outline-secondary">Знайти</button></div>
+</form>
+<div class="table-responsive card"><table class="table table-hover mb-0">
+<thead><tr><th>Назва</th><th>Категорія</th><th>Ціна</th><th>Залишок</th><th>Додано</th>{% if is_admin %}<th></th>{% endif %}</tr></thead>
+{% for p in object_list %}<tr>
+  <td><a href="{% url 'product_detail' p.pk %}">{{ p.name }}</a></td><td>{{ p.category }}</td><td>{{ p.price }} грн</td>
+  <td>{% if p.is_low_stock %}<span class="badge bg-danger">{{ p.stock_quantity }}</span>{% else %}{{ p.stock_quantity }}{% endif %}</td>
+  <td>{{ p.created_at|date:"d.m.Y" }}</td>
+  {% if is_admin %}<td class="text-end text-nowrap"><a class="btn btn-sm btn-outline-primary" href="{% url 'product_update' p.pk %}">Ред.</a>
+  <a class="btn btn-sm btn-outline-danger" href="{% url 'product_delete' p.pk %}">Видалити</a></td>{% endif %}</tr>
+{% empty %}<tr><td colspan="6" class="text-center text-muted py-3">Нічого не знайдено</td></tr>{% endfor %}
+</table></div>
+{% include 'pager.html' %}
+{% endblock %}
