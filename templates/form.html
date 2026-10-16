@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3 class="page-title mb-3">{{ title }}</h3>
+<div class="page-head"><h1 class="page-title">{{ title }}</h1></div>
 <div class="row"><div class="col-lg-6">
 <form method="post" class="card card-body">{% csrf_token %}
   {{ form.non_field_errors }}
   {% for f in form %}
-  <div class="mb-3"><label class="form-label">{{ f.label }}</label>{{ f }}
-    {% for e in f.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}</div>
+  <div class="mb-3"><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}
+    {% for e in f.errors %}<div class="text-danger small mt-1">{{ e }}</div>{% endfor %}</div>
   {% endfor %}
-  <div><button class="btn btn-brand">Зберегти</button>
+  <div class="d-flex flex-wrap align-items-center gap-2"><button class="btn btn-brand flex-grow-1 flex-md-grow-0">Зберегти</button>
   <a class="btn btn-link" href="javascript:history.back()">Скасувати</a></div>
 </form></div></div>
 {% endblock %}

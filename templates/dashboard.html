@@ -1,20 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3 class="page-title mb-4">Панель керування</h3>
+<div class="page-head"><h1 class="page-title">Панель керування</h1></div>
 <div class="row g-3 mb-4">
-  <div class="col-6 col-lg-3"><div class="card stat-card"><div class="card-body"><div class="text-muted small">Товарів</div><div class="num">{{ products_count }}</div></div></div></div>
-  <div class="col-6 col-lg-3"><div class="card stat-card"><div class="card-body"><div class="text-muted small">Категорій</div><div class="num">{{ categories_count }}</div></div></div></div>
-  <div class="col-6 col-lg-3"><div class="card stat-card"><div class="card-body"><div class="text-muted small">Усього замовлень</div><div class="num">{{ orders_count }}</div></div></div></div>
-  <div class="col-6 col-lg-3"><div class="card stat-card"><div class="card-body"><div class="text-muted small">Неоплачені замовлення</div><div class="num">{{ unpaid_count }}</div></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card stat"><div class="label">Товарів</div><div class="num">{{ products_count }}</div></div></div>
+  <div class="col-6 col-lg-3"><div class="card stat"><div class="label">Категорій</div><div class="num">{{ categories_count }}</div></div></div>
+  <div class="col-6 col-lg-3"><div class="card stat"><div class="label">Усього замовлень</div><div class="num">{{ orders_count }}</div></div></div>
+  <div class="col-6 col-lg-3"><div class="card stat {% if unpaid_count %}is-warn{% endif %}"><div class="label">Неоплачені замовлення</div><div class="num">{{ unpaid_count }}</div></div></div>
 </div>
 <div class="row g-3">
-  <div class="col-lg-7"><div class="card"><div class="card-header bg-white fw-semibold">Останні замовлення</div>
-    <table class="table mb-0"><thead><tr><th>№</th><th>Дата</th><th>Статус</th><th>Сума</th></tr></thead>
-    {% for o in recent_orders %}<tr><td><a href="{% url 'order_detail' o.pk %}">{{ o.pk }}</a></td><td>{{ o.created_at|date:"d.m.Y H:i" }}</td><td>{{ o.get_status_display }}</td><td>{{ o.total_amount }} грн</td></tr>
-    {% empty %}<tr><td colspan="4" class="text-muted">Замовлень ще немає</td></tr>{% endfor %}</table></div></div>
-  <div class="col-lg-5"><div class="card"><div class="card-header bg-white fw-semibold text-danger">Товари закінчуються</div>
+  <div class="col-lg-7"><div class="card"><div class="card-header">Останні замовлення</div>
+    <table class="table table-stack"><thead><tr><th>№</th><th>Дата</th><th>Статус</th><th>Сума</th></tr></thead>
+    <tbody>
+    {% for o in recent_orders %}<tr>
+      <td class="cell-main" data-label="№"><a href="{% url 'order_detail' o.pk %}"><span class="d-md-none">Замовлення №</span>{{ o.pk }}</a></td>
+      <td data-label="Дата">{{ o.created_at|date:"d.m.Y H:i" }}</td>
+      <td data-label="Статус"><span class="badge bg-{% if o.status == 'paid' %}success{% else %}warning{% endif %}">{{ o.get_status_display }}</span></td>
+      <td data-label="Сума">{{ o.total_amount }} грн</td></tr>
+    {% empty %}<tr><td colspan="4" class="text-muted">Замовлень ще немає</td></tr>{% endfor %}
+    </tbody></table></div></div>
+  <div class="col-lg-5"><div class="card"><div class="card-header">Товари закінчуються</div>
     <ul class="list-group list-group-flush">
-    {% for p in low_stock %}<li class="list-group-item d-flex justify-content-between"><a href="{% url 'product_detail' p.pk %}">{{ p.name }}</a><span class="badge bg-danger">{{ p.stock_quantity }}</span></li>
+    {% for p in low_stock %}<li class="list-group-item d-flex justify-content-between align-items-center py-3"><a href="{% url 'product_detail' p.pk %}">{{ p.name }}</a><span class="badge bg-danger">{{ p.stock_quantity }}</span></li>
     {% empty %}<li class="list-group-item text-muted">Усе в наявності</li>{% endfor %}</ul></div></div>
 </div>
 {% endblock %}

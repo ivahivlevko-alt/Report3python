@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3 class="page-title mb-3">{{ object.name }}</h3>
-<dl class="row card card-body col-lg-7 mx-0">
-  <dt class="col-4">Категорія</dt><dd class="col-8">{{ object.category }}</dd>
-  <dt class="col-4">Опис</dt><dd class="col-8">{{ object.description|default:"—" }}</dd>
-  <dt class="col-4">Ціна</dt><dd class="col-8">{{ object.price }} грн</dd>
-  <dt class="col-4">На складі</dt><dd class="col-8">{{ object.stock_quantity }}</dd>
-  <dt class="col-4">Додано</dt><dd class="col-8">{{ object.created_at|date:"d.m.Y H:i" }}</dd>
-</dl>
+<div class="page-head"><h1 class="page-title">{{ object.name }}</h1></div>
+<div class="row"><div class="col-lg-7"><div class="card card-body mb-3"><dl class="row mb-0">
+  <dt class="col-4 meta fw-normal">Категорія</dt><dd class="col-8">{{ object.category }}</dd>
+  <dt class="col-4 meta fw-normal">Опис</dt><dd class="col-8">{{ object.description|default:"—" }}</dd>
+  <dt class="col-4 meta fw-normal">Ціна</dt><dd class="col-8">{{ object.price }} грн</dd>
+  <dt class="col-4 meta fw-normal">На складі</dt><dd class="col-8">{{ object.stock_quantity }}</dd>
+  <dt class="col-4 meta fw-normal">Додано</dt><dd class="col-8 mb-0">{{ object.created_at|date:"d.m.Y H:i" }}</dd>
+</dl></div></div></div>
 {% if is_admin %}<a class="btn btn-outline-primary" href="{% url 'product_update' object.pk %}">Редагувати</a>{% endif %}
 <a class="btn btn-link" href="{% url 'product_list' %}">До списку</a>
 {% endblock %}

@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-<h3 class="page-title mb-3">Підтвердження видалення</h3>
-<div class="card card-body col-lg-6">
+<div class="page-head"><h1 class="page-title">Підтвердження видалення</h1></div>
+<div class="row"><div class="col-lg-6"><div class="card card-body">
   <p>Ви впевнені, що хочете видалити «{{ object }}»? Цю дію не можна скасувати.</p>
-  <form method="post">{% csrf_token %}
-    <button class="btn btn-danger">Так, видалити</button>
+  <form method="post" class="d-flex flex-wrap align-items-center gap-2">{% csrf_token %}
+    <button class="btn btn-danger flex-grow-1 flex-md-grow-0">Так, видалити</button>
     <a class="btn btn-link" href="javascript:history.back()">Ні, повернутися</a>
   </form>
-</div>
+</div></div></div>
 {% endblock %}
