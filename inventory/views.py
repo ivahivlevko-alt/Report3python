@@ -53,7 +53,6 @@ class SafeDeleteView(AdminRequiredMixin, DeleteView):
         return response
 
 
-# ---------- Головна ----------
 @login_required
 def dashboard(request):
     ctx = {
@@ -68,7 +67,6 @@ def dashboard(request):
     return render(request, 'dashboard.html', ctx)
 
 
-# ---------- Категорії ----------
 class CategoryList(LoginRequiredMixin, ListView):
     template_name = 'categories/list.html'
     paginate_by = 15
@@ -99,7 +97,6 @@ class CategoryDelete(SafeDeleteView):
     model, success_url = Category, reverse_lazy('category_list')
 
 
-# ---------- Товари ----------
 class ProductList(LoginRequiredMixin, ListView):
     template_name = 'products/list.html'
     paginate_by = 15
@@ -149,7 +146,6 @@ class ProductDelete(SafeDeleteView):
     model, success_url = Product, reverse_lazy('product_list')
 
 
-# ---------- Замовлення ----------
 class OrderList(LoginRequiredMixin, ListView):
     template_name = 'orders/list.html'
     paginate_by = 15

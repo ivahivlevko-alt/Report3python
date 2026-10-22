@@ -20,7 +20,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    LOW_STOCK = 10  # поріг «товар закінчується»
+    LOW_STOCK = 10  
 
     name = models.CharField('Назва', max_length=150)
     description = models.TextField('Опис', blank=True)
@@ -47,7 +47,6 @@ class Product(models.Model):
 class Order(models.Model):
     UNPAID, PAID = 'unpaid', 'paid'
     STATUSES = [(UNPAID, 'Неоплачене'), (PAID, 'Оплачене')]
-    # Дозволені переходи: оплатити або повернути в неоплачені
     TRANSITIONS = {UNPAID: [PAID], PAID: [UNPAID]}
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
@@ -55,7 +54,6 @@ class Order(models.Model):
     created_at = models.DateTimeField('Дата', auto_now_add=True)
     status = models.CharField('Статус', max_length=20, choices=STATUSES, default=UNPAID)
     total_amount = models.DecimalField('Сума, грн', max_digits=12, decimal_places=2, default=0)
-    # Позначка, що товари вже списано зі складу (захист від повторного списання)
     stock_deducted = models.BooleanField(default=False, editable=False)
 
     class Meta:
